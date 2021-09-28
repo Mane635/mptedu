@@ -1,0 +1,32 @@
+DirectoryIndex index.php index.html index.cgi 
+SetEnv TZ Africa/Johannesburg
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+</IfModule>
+
+# Prevent viewing of htaccess file.
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
+# Prevent directory listings
+Options All -Indexes
+
+# One month for most static assets
+<filesMatch ".(css|jpg|jpeg|png|gif|js|ico)$">
+Header set Cache-Control "max-age=2628000, public"
+</filesMatch>
+
+<FilesMatch ".(docx|pdf)$">
+    Header add X-robots-tag "noindex, noarchive, nosnippet"
+</FilesMatch>
+
+Redirect 301 / https://mptlocals.co.za/
+
+Options +SymLinksIfOwnerMatch 
+RewriteEngine On 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
